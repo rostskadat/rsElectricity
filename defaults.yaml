@@ -1,0 +1,86 @@
+bill-input: /home/rostskadat/Documents/Villa Verde Casa II/Comunidad/Electricidad
+load-input: /home/rostskadat/Documents/Villa Verde Casa II/Comunidad/Electricidad/e-Distribucion
+workbook: rs-bills-Comunidad.xlsx
+gsheet-id: 1FU7bKIMK-CggLkLsxOsurFbmoFOqjj10LYuYP2BfmC8
+
+# bill-input: /home/rostskadat/Documents/Villa Verde Casa II/Contrato Electricidad
+# load-input: /home/rostskadat/Documents/Villa Verde Casa II/Contrato Electricidad/e-Distribucion
+# workbook: bills-E74A.xlsx
+# gsheet-id: 1nKrjqB1AHhA3br43rSfknFwhRWDx48SX5D9khpohulo
+
+# bill-input: /home/rostskadat/Documents/Google Drive/SHARED MARTA/Contrato Arrendamiento y compra/CONDES DE ARAGÓN 36 ZARAGOZA/Facturas/Endesa
+# load-input: /home/rostskadat/Documents/Google Drive/SHARED MARTA/Contrato Arrendamiento y compra/CONDES DE ARAGÓN 36 ZARAGOZA/Facturas/Endesa/e-Distribucion
+# workbook: bills-CondesDeAragon36.xlsx
+# gsheet-id: 1xpdbEPHdBmzSODDW61rtfWAgy0GL2A16av7SkxH4RJA
+
+bill-input-excludes:
+  - "Simulation.*/.*"
+  - "Paneles/.*"
+  - ".*/Contracts/.*"
+  - "ES0031300855112011HB0F - Piscina/.*"
+load-input-excludes:
+  - filtered.csv
+load-max-age-in-days: 730
+dump-prefix: dump-
+locale: es_ES.utf8
+limit: -1
+cache-file: cached-bills.db
+credentials: service-account.json
+# Detect the emissor of the bill, and extract accordingly
+dispatchers:
+  "500015114224": nufri
+  "A81948077": endesa
+  "A87803862": te
+  "900 101 142": qener
+  "B39793294": plenitude
+# The localized column label. The key corresponds to the dict key while the value
+#   is the label used in the Excel sheet
+# BEWARE: The columns in the Excel sheet will be in the same order as the keys
+#   in the dict below.
+column_labels:
+  bill_id: Nº de factura
+  billing_date: Fecha de factura
+  billing_period_start: Inicio del periodo
+  billing_period_end: Fin del periodo
+  billed_power: Potencia
+  billed_energy: Energía
+  gross_amount: Importe bruto
+  billed_amount: Importe facturado
+  p1: P1
+  p2: P2
+  p3: P3
+  p4: P4
+  p5: P5
+  p6: P6
+  cp1: CP1
+  cp2: CP2
+  cp3: CP3
+  cp4: CP4
+  cp5: CP5
+  cp6: CP6
+  contract_type: Tipo de contrato
+  file: Fichero
+# The localized worksheet label. Each worksheet corresponds to a specific
+#   CUPS. The worksheet will be ordered in the order of the dict below.
+#   Each worksheet will then have a friendly name equals to the value
+#   corresponding to the dict key
+sheet_names:
+  ES0031300855143009DM0F: E5 - 09DM0F
+  ES0031300855145010GM0F: E6 - 10GM0F
+  ES0031300855146009RS0F: E7 - 09RS0F
+  ES0031300855147010EG0F: E8 - 10EG0F
+  ES0031300855147001KH0F: ACS - 01KH0F
+  ES0031300855143010DY0F: GARAJE - 10DY0F
+  ES0031300855147011EM0F: INCENDIOS - 11EM0F
+  ES0031300855146007RJ0F: E7 - 4A
+  ES0031300855700019PR0F: E36.1 - 4B
+contract_types:
+  ES0031300855143009DM0F: 2.0
+  ES0031300855145010GM0F: 2.0
+  ES0031300855146009RS0F: 2.0
+  ES0031300855147010EG0F: 2.0
+  ES0031300855147001KH0F: 3.0
+  ES0031300855143010DY0F: 2.0
+  ES0031300855147011EM0F: 2.0
+  ES0031300855146007RJ0F: 2.0
+  ES0031300855700019PR0F: 2.0

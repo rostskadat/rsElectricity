@@ -1,0 +1,45 @@
+Value holder (.*)
+Value billed_amount (-?[0-9\.]+,[0-9]+)
+Value Required bill_id (EN \S+)
+Value billing_date (\d{2}/\d{2}/\d{4})
+Value billing_period_start (\d{2}/\d{2}/\d{4})
+Value billing_period_end (\d{2}/\d{2}/\d{4})
+Value Required cups (\S+)
+Value contract_type (\S+)
+Value billed_energy (-?[0-9\.]+,[0-9]{2})
+Value billed_power ([0-9]+,[0-9]{2})
+Value p1 ([0-9,]+)
+Value p2 ([0-9,]+)
+Value p3 ([0-9,]+)
+Value p4 ([0-9,]+)
+Value p5 ([0-9,]+)
+Value p6 ([0-9,]+)
+Value cp1 ([0-9,]+)
+Value cp2 ([0-9,]+)
+Value cp3 ([0-9,]+)
+Value cp4 ([0-9,]+)
+Value cp5 ([0-9,]+)
+Value cp6 ([0-9,]+)
+Value nufri_contracted_power (.*)
+
+Start
+  ^Factura Electricidad -> FoundInvoice
+
+FoundInvoice
+  ^.*Total Factura\s+${billed_amount}\s+€
+  ^Nº de Factura:\s+${bill_id}
+  ^.*Por Potencia Contratada\s+${billed_power}\s+€$$
+  ^Periodo de Consumo:\s+${billing_period_start}\s+\-\s+${billing_period_end}\s+Por Energía Consumida\s+${billed_energy}\s*€$$
+  ^Fecha de Factura:\s+${billing_date}
+  ^Dirección:\s*${holder}
+  ^Tarifa de Acceso:\s*${contract_type}
+  ^Potencia Contratada \(kW\):\s+${nufri_contracted_power}\s*
+  ^CUPS:\s*${cups}
+  ^Término Energía Libre$$ -> NufriEnergy
+
+NufriEnergy
+  ^P1\s+${p1}\s+kWh
+  ^P2\s+${p2}\s+kWh
+  ^P3\s+${p3}\s+kWh
+  ^Productos -> Record
+

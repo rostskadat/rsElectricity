@@ -1,0 +1,57 @@
+Value holder (CDAD ?PROP ?ANDADOR ?CAMPANILLA|MARTA ?RODRIGUEZ ?QUIJANO)
+Value billed_amount (-?[0-9\.]+,[0-9]+)
+Value Required bill_id (\S+)
+Value billing_date (\d{2}/\d{2}/\d{4})
+Value billing_period_start (\d{2}/\d{2}/\d{4})
+Value billing_period_end (\d{2}/\d{2}/\d{4})
+Value Required cups (\S+)
+Value contract_type (\S+)
+Value billed_energy (-?[0-9\.]+,[0-9]+)
+Value billed_power ([0-9\.]+,[0-9]+)
+Value p1 ([0-9\.]+,[0-9]+)
+Value p2 ([0-9\.]+,[0-9]+)
+Value p3 ([0-9\.]+,[0-9]+)
+Value p4 ([0-9\.]+,[0-9]+)
+Value p5 ([0-9\.]+,[0-9]+)
+Value p6 ([0-9\.]+,[0-9]+)
+Value cp1 ([0-9,]+)
+Value cp2 ([0-9,]+)
+Value cp3 ([0-9,]+)
+Value cp4 ([0-9,]+)
+Value cp5 ([0-9,]+)
+Value cp6 ([0-9,]+)
+
+Start
+  ^\s*DATOS ?DE ?LA ?FACTURA -> FoundInvoice
+
+FoundInvoice
+  ^Total\s+${billed_amount}\s*€
+  ^(Nº de factura|Nº factura|Nºfactura):\s*${bill_id}
+  ^(Fecha emisión factura|Fechaemisiónfactura):\s*${billing_date}
+  ^(Periodo de facturación|Periododefacturación):\s*del\s*${billing_period_start}\s*al?\s*${billing_period_end}
+  ^Potencia\s+${billed_power}\s*€
+  ^Energía\s+${billed_energy}\s*€
+  ^${holder}
+  ^(Titular del contrato|Titulardelcontrato):\s*${holder}\s*CUPS:\s*${cups}
+  ^Titular del contrato:\s*${holder}\s+Número de contador:
+  ^.*(Peaje de transporte y distribución|Peajedetransporteydistribución):\s*${contract_type}
+  ^\s*CUPS:\s+${cups}(\s+.*)?
+  ^DETALLE ?DE ?LA ?FACTURA -> EndesaDetails
+
+EndesaDetails
+  ^P1 1.18.1(\s+[0-9\.]+,[0-9]+){4}\s+${p1}
+  ^P2 1.18.2(\s+[0-9\.]+,[0-9]+){4}\s+${p2}
+  ^P3 1.18.3(\s+[0-9\.]+,[0-9]+){4}\s+${p3}
+  ^P4 1.18.4(\s+[0-9\.]+,[0-9]+){4}\s+${p4}
+  ^P5 1.18.5(\s+[0-9\.]+,[0-9]+){4}\s+${p5}
+  ^P6 1.18.6(\s+[0-9\.]+,[0-9]+){4}\s+${p6}
+  ^Pot. ?P1\s*${cp1}\s+kW
+  ^Pot. ?P2\s*${cp2}\s+kW
+  ^Pot. ?P3\s*${cp3}\s+kW
+  ^Pot. ?P4\s*${cp4}\s+kW
+  ^Pot. ?P5\s*${cp5}\s+kW
+  ^Pot. ?P6\s*${cp6}\s+kW
+  ^.*Punta(\s+[0-9\.]+,[0-9]+){4}\s+${p1}
+  ^.*Llano(\s+[0-9\.]+,[0-9]+){4}\s+${p2}
+  ^.*Valle(\s+[0-9\.]+,[0-9]+){4}\s+${p3}
+  ^ATENCIÓN ?AL ?CLIENTE -> Record
