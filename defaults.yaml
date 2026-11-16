@@ -1,0 +1,61 @@
+bill-input: ~/Documents/Electricity
+load-input: ~/Documents/Electricity/Loads
+workbook: bills.xlsx
+gsheet-id: sqvJizu1KbJVhqrokKaKEm3UTLMSZT16aQFKwRF9KPeb
+
+bill-input-excludes:
+  - "Simulation.*/.*"
+  - "Paneles/.*"
+  - ".*/Contracts/.*"
+load-input-excludes:
+  - filtered.csv
+load-max-age-in-days: 730
+dump-prefix: dump-
+locale: es_ES.utf8
+limit: -1
+cache-file: cached-bills.db
+credentials: service-account.json
+# Detect the emissor of the bill, and extract accordingly
+dispatchers:
+  "500015114224": nufri
+  "A81948077": endesa
+  "A87803862": te
+  "900 101 142": qener
+  "B39793294": plenitude
+# The localized column label. The key corresponds to the dict key while the value
+#   is the label used in the Excel sheet
+# BEWARE: The columns in the Excel sheet will be in the same order as the keys
+#   in the dict below.
+column_labels:
+  bill_id: Nº de factura
+  billing_date: Fecha de factura
+  billing_period_start: Inicio del periodo
+  billing_period_end: Fin del periodo
+  billed_power: Potencia
+  billed_energy: Energía
+  gross_amount: Importe bruto
+  billed_amount: Importe facturado
+  p1: P1
+  p2: P2
+  p3: P3
+  p4: P4
+  p5: P5
+  p6: P6
+  cp1: CP1
+  cp2: CP2
+  cp3: CP3
+  cp4: CP4
+  cp5: CP5
+  cp6: CP6
+  contract_type: Tipo de contrato
+  file: Fichero
+# The localized worksheet label. Each worksheet corresponds to a specific
+#   CUPS. The worksheet will be ordered in the order of the dict below.
+#   Each worksheet will then have a friendly name equals to the value
+#   corresponding to the dict key
+sheet_names:
+  ES00313008551430XXXX0F: CUPS1
+  ES00313008551470XXXX0F: CUPS2
+contract_types:
+  ES00313008551430XXXX0F: 2.0
+  ES00313008551470XXXX0F: 3.0
